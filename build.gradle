@@ -1,0 +1,78 @@
+plugins {
+	id 'org.springframework.boot' version '2.2.1.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+	id 'java'
+	id 'jacoco'
+	id "org.sonarqube" version "2.8"
+}
+
+
+group = 'com.cxloyalty'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+ext {
+	set('springCloudVersion', "Greenwich.SR3")
+}
+
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven {
+		url 'http://ip-10-222-113-153.eu-west-1.compute.internal:8081/repository/affinion'
+	}
+	maven {
+		url 'http://10.222.109.183:8081/nexus/repository/h2ng/'
+	}
+}
+
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config:2.1.4.RELEASE'
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springframework.data:spring-data-elasticsearch:3.2.0.RELEASE'
+	implementation 'com.cxloyalty.util:benefits-common-util:1.0.0-SNAPSHOT'
+	implementation 'org.json:json:20180813'
+	implementation 'org.apache.commons:commons-lang3:3.7'
+	compile ( 'com.affinion.gce.security:gce-common-security-oauth2:1.0.6')
+	compile group: 'org.elasticsearch', name: 'elasticsearch', version: '6.8.3'
+	compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '6.8.3'
+	compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '6.8.3'
+	compile group: 'com.google.code.gson', name: 'gson', version: '2.8.6'
+
+	compileOnly 'org.projectlombok:lombok'
+	
+	testCompile group: 'com.squareup.okhttp3', name: 'mockwebserver', version: '3.2.0'
+
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'io.projectreactor:reactor-test'
+
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
